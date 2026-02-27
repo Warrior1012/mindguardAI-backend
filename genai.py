@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
+from flask import json, jsonify
 from google import genai
-
 load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -58,8 +58,9 @@ Escalation:
 
         return response_text
 
-    except Exception:
-        return "We are currently unable to generate advice. Please take a short break and consider speaking to someone you trust."
+    except Exception as e:
+     print("GENAI ERROR:", str(e))
+    return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
